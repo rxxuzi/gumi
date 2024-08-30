@@ -4,15 +4,10 @@
 #include "stb/stb_image_write.h"
 #include "gumi.h"
 #include <stdio.h>
-#include <string.h>
+#include <stdint.h>
 
-const char *get_filename_ext(const char *filename) {
-    const char *dot = strrchr(filename, '.');
-    if(!dot || dot == filename) return "";
-    return dot + 1;
-}
 
-int process(const char *input_file, const char *output_file, ProcessType type) {
+int process_with_format(const char *input_file, const char *output_file, ProcessType type, ImageFormat format) {
     int width, height, channels;
     uint8_t *img = stbi_load(input_file, &width, &height, &channels, 0);
     if (img == NULL) {
@@ -35,18 +30,21 @@ int process(const char *input_file, const char *output_file, ProcessType type) {
             return 1;
     }
 
-    // Determine output format based on file extension
-    const char *ext = get_filename_ext(output_file);
     int result;
-
-    if (strcasecmp(ext, "png") == 0) {
-        result = stbi_write_png(output_file, width, height, channels, img, width * channels);
-    } else if (strcasecmp(ext, "jpg") == 0 || strcasecmp(ext, "jpeg") == 0) {
-        result = stbi_write_jpg(output_file, width, height, channels, img, 95);
-    } else {
-        printf("Unsupported output format: %s\n", ext);
-        stbi_image_free(img);
-        return 1;
+    switch (format) {
+        case PNG:
+            result = stbi_write_png(output_file, width, height, channels, img, width * channels);
+            break;
+        case JPEG:
+            result = stbi_write_jpg(output_file, width, height, channels, img, 95);
+            break;
+        case BMP:
+            result = stbi_write_bmp(output_file, width, height, channels, img);
+            break;
+        default:
+            printf("Unknown output format\n");
+            stbi_image_free(img);
+            return 1;
     }
 
     stbi_image_free(img);

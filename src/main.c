@@ -1,13 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <getopt.h>
 #include "gumi.h"
 
 void print_usage() {
-    printf("Usage: gumi <command> <input_file> [-o <output_file>]\n");
+    printf("Usage: gumi <command> <input_file> [<input_file2>] [-o <output_file>] [-f <format>]\n");
     printf("Commands:\n");
     printf("  gray    - Convert to grayscale\n");
     printf("  binary  - Convert to binary\n");
+    printf("Formats:\n");
+    printf("  png, jpg, bmp\n");
+}
+
+ImageFormat parse_format(const char *format_str) {
+    if (strcasecmp(format_str, "png") == 0) return PNG;
+    if (strcasecmp(format_str, "jpg") == 0 || strcasecmp(format_str, "jpeg") == 0) return JPEG;
+    if (strcasecmp(format_str, "bmp") == 0) return BMP;
+    return PNG;
+}
+
+char* get_base_name(const char* filename) {
+    char* base = strdup(filename);
+    char* dot = strrchr(base, '.');
+    if (dot) {
+        *dot = '\0';
+    }
+    return base;
 }
 
 int main(int argc, char **argv) {
@@ -19,7 +38,23 @@ int main(int argc, char **argv) {
     const char *command = argv[1];
     const char *input_file = argv[2];
     char *output_file = NULL;
+    ImageFormat format = PNG;
     ProcessType type;
+
+    int opt;
+    while ((opt = getopt(argc - 2, argv + 2, "o:f:")) != -1) {
+        switch (opt) {
+            case 'o':
+                output_file = optarg;
+                break;
+            case 'f':
+                format = parse_format(optarg);
+                break;
+            default:
+                print_usage();
+                return 1;
+        }
+    }
 
     if (strcmp(command, "gray") == 0) {
         type = G_GRAY;
@@ -31,31 +66,22 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    // Check for -o option
-    if (argc >= 5 && strcmp(argv[3], "-o") == 0) {
-        output_file = argv[4];
-    } else {
-        // Generate default output filename
-        output_file = malloc(strlen(input_file) + strlen(command) + 2);
+    if (!output_file) {
+        char* base_name = get_base_name(input_file);
+        output_file = malloc(strlen(base_name) + strlen(command) + 6);
         if (output_file == NULL) {
             printf("Memory allocation failed.\n");
+            free(base_name);
             return 1;
         }
-        char *dot = strrchr(input_file, '.');
-        if (dot != NULL) {
-            size_t base_len = dot - input_file;
-            strncpy(output_file, input_file, base_len);
-            sprintf(output_file + base_len, "-%s%s", command, dot);
-        } else {
-            sprintf(output_file, "%s-%s", input_file, command);
-        }
+        sprintf(output_file, "%s-%s.%s", base_name, command, format == JPEG ? "jpg" : (format == BMP ? "bmp" : "png"));
+        free(base_name);
     }
 
-    int result = process(input_file, output_file, type);
+    int result;
+    result = process_with_format(input_file, output_file, type, format);
 
-    if (argc < 5) {
-        free(output_file);
-    }
+    free(output_file);
 
     return result;
 }
