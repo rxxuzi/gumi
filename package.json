@@ -1,0 +1,72 @@
+{
+    "name": "@rxxuzi/gumi",
+    "version": "1.1.0",
+    "description": "Clean & minimal design system with delightful interactions",
+    "main": "dist/js/gumi.js",
+    "module": "dist/js/gumi.esm.js",
+    "types": "dist/types/gumi.d.ts",
+    "style": "dist/gumi.css",
+    "files": [
+        "dist",
+        "src"
+    ],
+    "scripts": {
+        "dev": "concurrently \"npm run build:watch\" \"npm run serve\"",
+        "serve": "live-server --port=3000 --open=test/index.html --watch=dist",
+        "build": "npm run clean && npm run build:scss && npm run build:ts && npm run build:bundle",
+        "build:scss": "sass src/scss/gumi.scss dist/gumi.css --style=compressed --no-source-map",
+        "build:scss:dev": "sass src/scss/gumi.scss dist/gumi.css --source-map",
+        "build:scss:watch": "sass src/scss/gumi.scss dist/gumi.css --watch --source-map",
+        "build:ts": "tsc",
+        "build:bundle": "rollup -c",
+        "build:watch": "concurrently \"npm run build:scss:watch\" \"npm run build:ts -- --watch\"",
+        "clean": "rimraf dist",
+        "lint": "eslint src/ts --ext .ts",
+        "lint:fix": "eslint src/ts --ext .ts --fix",
+        "format": "prettier --write \"src/**/*.{ts,scss,json}\"",
+        "test": "jest"
+    },
+    "keywords": [
+        "css",
+        "framework",
+        "design-system",
+        "gumi",
+        "minimal",
+        "clean",
+        "ui",
+        "components"
+    ],
+    "author": "rxxuzi",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rxxuzi/gumi.git"
+    },
+    "bugs": {
+        "url": "https://github.com/rxxuzi/gumi/issues"
+    },
+    "homepage": "https://github.com/rxxuzi/gumi",
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^25.0.0",
+        "@rollup/plugin-node-resolve": "^15.0.0",
+        "@rollup/plugin-terser": "^0.4.0",
+        "@rollup/plugin-typescript": "^11.0.0",
+        "@types/node": "^20.0.0",
+        "@typescript-eslint/eslint-plugin": "^6.0.0",
+        "@typescript-eslint/parser": "^6.0.0",
+        "concurrently": "^8.0.0",
+        "eslint": "^8.0.0",
+        "jest": "^29.0.0",
+        "live-server": "^1.2.2",
+        "prettier": "^3.0.0",
+        "rimraf": "^5.0.0",
+        "rollup": "^4.0.0",
+        "sass": "^1.77.0",
+        "typescript": "^5.0.0"
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not dead"
+    ]
+}
