@@ -1,0 +1,189 @@
+// _typography.scss
+// Gumi.css v1.0.0 - Typography
+
+// Headings
+h1, h2, h3, h4, h5, h6 {
+    font-weight: var(--gumi-font-semibold);
+    line-height: var(--gumi-leading-tight);
+    margin-bottom: var(--gumi-space-2);
+    color: var(--gumi-foreground);
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    font-size: var(--gumi-text-5xl);
+    font-weight: var(--gumi-font-bold);
+    letter-spacing: -0.04em;
+}
+
+h2 {
+    font-size: var(--gumi-text-4xl);
+    letter-spacing: -0.03em;
+}
+
+h3 {
+    font-size: var(--gumi-text-2xl);
+}
+
+h4 {
+    font-size: var(--gumi-text-xl);
+}
+
+h5 {
+    font-size: var(--gumi-text-lg);
+}
+
+h6 {
+    font-size: var(--gumi-text-base);
+}
+
+// Paragraphs
+p {
+    margin-bottom: var(--gumi-space-4);
+    color: var(--gumi-muted);
+    line-height: var(--gumi-leading-relaxed);
+}
+
+// Text utilities
+.text {
+    &-center {
+        text-align: center;
+    }
+
+    &-left {
+        text-align: left;
+    }
+
+    &-right {
+        text-align: right;
+    }
+
+    &-sm {
+        font-size: var(--gumi-text-sm);
+    }
+
+    &-lg {
+        font-size: var(--gumi-text-lg);
+    }
+
+    &-xl {
+        font-size: var(--gumi-text-xl);
+    }
+
+    &-2xl {
+        font-size: var(--gumi-text-2xl);
+    }
+
+    &-3xl {
+        font-size: var(--gumi-text-3xl);
+    }
+
+    &-4xl {
+        font-size: var(--gumi-text-4xl);
+    }
+
+    &-5xl {
+        font-size: var(--gumi-text-5xl);
+    }
+
+    &-primary {
+        color: var(--gumi-primary);
+    }
+
+    &-secondary {
+        color: var(--gumi-secondary);
+    }
+
+    &-success {
+        color: var(--gumi-success);
+    }
+
+    &-warning {
+        color: var(--gumi-warning);
+    }
+
+    &-error {
+        color: var(--gumi-error);
+    }
+
+    &-muted {
+        color: var(--gumi-muted);
+    }
+}
+
+// Font utilities
+.font {
+    &-light {
+        font-weight: var(--gumi-font-light);
+    }
+
+    &-normal {
+        font-weight: var(--gumi-font-normal);
+    }
+
+    &-medium {
+        font-weight: var(--gumi-font-medium);
+    }
+
+    &-semibold {
+        font-weight: var(--gumi-font-semibold);
+    }
+
+    &-bold {
+        font-weight: var(--gumi-font-bold);
+    }
+
+    &-sans {
+        font-family: var(--gumi-font-sans);
+    }
+
+    &-mono {
+        font-family: var(--gumi-font-mono);
+    }
+}
+
+// Line height
+.leading {
+    &-tight {
+        line-height: var(--gumi-leading-tight);
+    }
+
+    &-normal {
+        line-height: var(--gumi-leading-normal);
+    }
+
+    &-relaxed {
+        line-height: var(--gumi-leading-relaxed);
+    }
+}
+
+// Truncate text
+.truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+// Line clamp
+.line-clamp {
+    &-1 {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+    }
+
+    &-2 {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+
+    &-3 {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+    }
+}

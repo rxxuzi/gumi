@@ -1,0 +1,236 @@
+// _buttons.scss
+// Gumi.css v1.0.0 - Buttons
+
+// Base button styles
+.btn {
+    font-family: inherit;
+    font-size: var(--gumi-text-base);
+    font-weight: var(--gumi-font-medium);
+    padding: var(--gumi-space-3) var(--gumi-space-6);
+    border: none;
+    border-radius: var(--gumi-radius-base);
+    background-color: var(--gumi-primary);
+    color: white;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gumi-space-2);
+    text-decoration: none;
+    min-height: 44px;
+    position: relative;
+    overflow: hidden;
+    @include transition;
+
+    &:hover:not(:disabled) {
+        opacity: 0.8;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none !important;
+    }
+
+    // Loading state
+    &[data-loading="true"] {
+        color: transparent;
+        pointer-events: none;
+
+        .spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    // Variants
+    &-secondary {
+        background-color: var(--gumi-surface);
+        color: var(--gumi-foreground);
+        border: 1px solid var(--gumi-border);
+
+        &:hover {
+            background-color: var(--gumi-surface-hover);
+            border-color: var(--gumi-border-light);
+        }
+    }
+
+    &-outline {
+        background-color: transparent;
+        color: var(--gumi-primary);
+        border: 1px solid var(--gumi-primary);
+
+        &:hover {
+            background-color: var(--gumi-primary);
+            color: white;
+        }
+    }
+
+    &-ghost {
+        background-color: transparent;
+        color: var(--gumi-foreground);
+        border: none;
+
+        &:hover {
+            background-color: var(--gumi-surface);
+        }
+    }
+
+    &-success {
+        background-color: var(--gumi-success);
+        color: white;
+
+        &:hover {
+            background-color: var(--gumi-success);
+            filter: brightness(0.9);
+        }
+    }
+
+    &-warning {
+        background-color: var(--gumi-warning);
+        color: white;
+
+        &:hover {
+            background-color: var(--gumi-warning);
+            filter: brightness(0.9);
+        }
+    }
+
+    &-error {
+        background-color: var(--gumi-error);
+        color: white;
+
+        &:hover {
+            background-color: var(--gumi-error);
+            filter: brightness(0.9);
+        }
+    }
+
+    // Sizes
+    &-sm {
+        padding: var(--gumi-space-2) var(--gumi-space-4);
+        font-size: var(--gumi-text-sm);
+        min-height: 36px;
+    }
+
+    &-lg {
+        padding: var(--gumi-space-4) var(--gumi-space-8);
+        font-size: var(--gumi-text-lg);
+        min-height: 52px;
+    }
+
+    // Icon button
+    &-icon {
+        padding: var(--gumi-space-3);
+        min-width: 44px;
+
+        &.btn-sm {
+            padding: var(--gumi-space-2);
+            min-width: 36px;
+            min-height: 36px;
+        }
+
+        &.btn-lg {
+            padding: var(--gumi-space-4);
+            min-width: 52px;
+            min-height: 52px;
+        }
+    }
+
+    // Full width
+    &-block {
+        width: 100%;
+    }
+
+    // Button group
+    &-group {
+        display: inline-flex;
+
+        .btn {
+            border-radius: 0;
+            margin: 0;
+
+            &:first-child {
+                border-top-left-radius: var(--gumi-radius-base);
+                border-bottom-left-radius: var(--gumi-radius-base);
+            }
+
+            &:last-child {
+                border-top-right-radius: var(--gumi-radius-base);
+                border-bottom-right-radius: var(--gumi-radius-base);
+            }
+
+            &:not(:last-child) {
+                border-right: 1px solid rgba(0, 0, 0, 0.1);
+            }
+
+            &.btn-outline:not(:last-child) {
+                border-right: 1px solid var(--gumi-primary);
+            }
+        }
+    }
+}
+
+// Floating Action Button
+.fab {
+    position: fixed;
+    bottom: var(--gumi-space-6);
+    right: var(--gumi-space-6);
+    width: 56px;
+    height: 56px;
+    border-radius: var(--gumi-radius-full);
+    background-color: var(--gumi-primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--gumi-shadow-lg);
+    z-index: var(--gumi-z-fixed);
+    @include transition;
+    @include hover-lift;
+
+    &:hover {
+        box-shadow: var(--gumi-shadow-xl);
+    }
+
+    &.fab-sm {
+        width: 40px;
+        height: 40px;
+    }
+
+    &.fab-extended {
+        width: auto;
+        padding: 0 var(--gumi-space-6);
+        gap: var(--gumi-space-2);
+    }
+}
+
+// Close button
+.btn-close {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--gumi-radius-base);
+    color: var(--gumi-muted);
+    @include transition;
+
+    &:hover {
+        background-color: var(--gumi-surface);
+        color: var(--gumi-foreground);
+    }
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+}

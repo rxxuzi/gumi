@@ -1,0 +1,260 @@
+// Enhanced progress bar with color progression
+
+// Color progression classes
+.progress-bar {
+    &[data-progress="0"],
+    &[data-progress="1"],
+    &[data-progress="2"],
+    &[data-progress="3"],
+    &[data-progress="4"],
+    &[data-progress="5"],
+    &[data-progress="6"],
+    &[data-progress="7"],
+    &[data-progress="8"],
+    &[data-progress="9"],
+    &[data-progress="10"],
+    &[data-progress="11"],
+    &[data-progress="12"],
+    &[data-progress="13"],
+    &[data-progress="14"],
+    &[data-progress="15"],
+    &[data-progress="16"],
+    &[data-progress="17"],
+    &[data-progress="18"],
+    &[data-progress="19"],
+    &[data-progress="20"],
+    &[data-progress="21"],
+    &[data-progress="22"],
+    &[data-progress="23"],
+    &[data-progress="24"] {
+        background-color: #ef4444; // Red for 0-24%
+    }
+
+    &[data-progress="25"],
+    &[data-progress="26"],
+    &[data-progress="27"],
+    &[data-progress="28"],
+    &[data-progress="29"],
+    &[data-progress="30"],
+    &[data-progress="31"],
+    &[data-progress="32"],
+    &[data-progress="33"],
+    &[data-progress="34"],
+    &[data-progress="35"],
+    &[data-progress="36"],
+    &[data-progress="37"],
+    &[data-progress="38"],
+    &[data-progress="39"],
+    &[data-progress="40"],
+    &[data-progress="41"],
+    &[data-progress="42"],
+    &[data-progress="43"],
+    &[data-progress="44"],
+    &[data-progress="45"],
+    &[data-progress="46"],
+    &[data-progress="47"],
+    &[data-progress="48"],
+    &[data-progress="49"] {
+        background-color: #f97316; // Orange for 25-49%
+    }
+
+    &[data-progress="50"],
+    &[data-progress="51"],
+    &[data-progress="52"],
+    &[data-progress="53"],
+    &[data-progress="54"],
+    &[data-progress="55"],
+    &[data-progress="56"],
+    &[data-progress="57"],
+    &[data-progress="58"],
+    &[data-progress="59"],
+    &[data-progress="60"],
+    &[data-progress="61"],
+    &[data-progress="62"],
+    &[data-progress="63"],
+    &[data-progress="64"],
+    &[data-progress="65"],
+    &[data-progress="66"],
+    &[data-progress="67"],
+    &[data-progress="68"],
+    &[data-progress="69"],
+    &[data-progress="70"],
+    &[data-progress="71"],
+    &[data-progress="72"],
+    &[data-progress="73"],
+    &[data-progress="74"] {
+        background-color: #eab308; // Yellow for 50-74%
+    }
+
+    &[data-progress="75"],
+    &[data-progress="76"],
+    &[data-progress="77"],
+    &[data-progress="78"],
+    &[data-progress="79"],
+    &[data-progress="80"],
+    &[data-progress="81"],
+    &[data-progress="82"],
+    &[data-progress="83"],
+    &[data-progress="84"],
+    &[data-progress="85"],
+    &[data-progress="86"],
+    &[data-progress="87"],
+    &[data-progress="88"],
+    &[data-progress="89"],
+    &[data-progress="90"],
+    &[data-progress="91"],
+    &[data-progress="92"],
+    &[data-progress="93"],
+    &[data-progress="94"],
+    &[data-progress="95"],
+    &[data-progress="96"],
+    &[data-progress="97"],
+    &[data-progress="98"],
+    &[data-progress="99"],
+    &[data-progress="100"] {
+        background-color: #22c55e; // Green for 75-100%
+    }
+}
+
+// Smooth gradient version
+.progress-gradient {
+    .progress-bar {
+        background: linear-gradient(90deg, 
+            #ef4444 0%,     // Red
+            #f97316 33%,    // Orange  
+            #eab308 66%,    // Yellow
+            #22c55e 100%    // Green
+        );
+        background-size: 400% 100%;
+        background-position: 100% 0;
+        transition: background-position 0.3s ease, width 0.3s ease;
+    }
+    
+    &[data-progress="0"] .progress-bar { background-position: 100% 0; }
+    &[data-progress="25"] .progress-bar { background-position: 75% 0; }
+    &[data-progress="50"] .progress-bar { background-position: 50% 0; }
+    &[data-progress="75"] .progress-bar { background-position: 25% 0; }
+    &[data-progress="100"] .progress-bar { background-position: 0% 0; }
+}
+
+// Animated progress with color changes
+.progress-animated-color {
+    .progress-bar {
+        transition: all 0.5s ease;
+        position: relative;
+        
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0.3) 0%,
+                rgba(255,255,255,0.6) 50%,
+                rgba(255,255,255,0.3) 100%
+            );
+            animation: progress-shine 2s ease-in-out infinite;
+        }
+    }
+}
+
+@keyframes progress-shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+// Progress with percentage text
+.progress-with-text {
+    position: relative;
+    
+    .progress-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: var(--gumi-text-sm);
+        font-weight: var(--gumi-font-medium);
+        color: var(--gumi-foreground);
+        z-index: 1;
+    }
+}
+
+// Progress bar variants
+.progress-success .progress-bar {
+    background-color: #22c55e !important;
+}
+
+.progress-warning .progress-bar {
+    background-color: #eab308 !important;
+}
+
+.progress-error .progress-bar {
+    background-color: #ef4444 !important;
+}
+
+.progress-info .progress-bar {
+    background-color: #3b82f6 !important;
+}
+
+// Circular progress
+.progress-circular {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: conic-gradient(
+        #22c55e 0deg,
+        #eab308 90deg,
+        #f97316 180deg,
+        #ef4444 270deg,
+        #e5e7eb 360deg
+    );
+    position: relative;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: calc(100% - 8px);
+        height: calc(100% - 8px);
+        background: var(--gumi-bg-primary);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .progress-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: var(--gumi-text-sm);
+        font-weight: var(--gumi-font-medium);
+        z-index: 1;
+    }
+}
+
+// Step progress
+.progress-steps {
+    display: flex;
+    align-items: center;
+    gap: var(--gumi-space-2);
+    
+    .step {
+        flex: 1;
+        height: 4px;
+        background-color: var(--gumi-bg-secondary);
+        border-radius: var(--gumi-radius-full);
+        transition: background-color 0.3s ease;
+        
+        &.completed {
+            background-color: #22c55e;
+        }
+        
+        &.current {
+            background-color: #eab308;
+            animation: pulse 2s ease-in-out infinite;
+        }
+    }
+}

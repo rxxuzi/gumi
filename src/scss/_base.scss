@@ -1,0 +1,133 @@
+// _base.scss
+// Gumi.css v1.0.0 - Base HTML Elements
+
+// Links
+a {
+    color: var(--gumi-primary);
+    text-decoration: none;
+    @include transition;
+
+    &:hover {
+        color: var(--gumi-primary-hover);
+        text-decoration: underline;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--gumi-primary);
+        outline-offset: 2px;
+        border-radius: var(--gumi-radius-sm);
+    }
+}
+
+// Lists
+ul,
+ol {
+    margin-bottom: var(--gumi-space-4);
+    padding-left: var(--gumi-space-6);
+}
+
+li {
+    margin-bottom: var(--gumi-space-1);
+    color: var(--gumi-muted);
+    line-height: var(--gumi-leading-relaxed);
+}
+
+nav {
+    ul,
+    ol {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+// Code
+code {
+    font-family: var(--gumi-font-mono);
+    background-color: var(--gumi-surface);
+    color: var(--gumi-secondary);
+    padding: var(--gumi-space-1) var(--gumi-space-2);
+    border-radius: var(--gumi-radius-sm);
+    font-size: var(--gumi-text-sm);
+    border: 1px solid var(--gumi-border);
+}
+
+pre {
+    background-color: var(--gumi-surface);
+    color: var(--gumi-foreground);
+    padding: var(--gumi-space-4);
+    border-radius: var(--gumi-radius-lg);
+    overflow-x: auto;
+    margin-bottom: var(--gumi-space-4);
+    border: 1px solid var(--gumi-border);
+    line-height: var(--gumi-leading-relaxed);
+
+    code {
+        background: none;
+        padding: 0;
+        color: var(--gumi-foreground);
+        border: none;
+    }
+}
+
+// Tables
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--gumi-space-4);
+    border: 1px solid var(--gumi-border);
+    border-radius: var(--gumi-radius-lg);
+    overflow: hidden;
+}
+
+th,
+td {
+    padding: var(--gumi-space-3);
+    text-align: left;
+    border-bottom: 1px solid var(--gumi-border);
+}
+
+th {
+    background-color: var(--gumi-surface);
+    font-weight: var(--gumi-font-semibold);
+    color: var(--gumi-foreground);
+}
+
+td {
+    color: var(--gumi-muted);
+}
+
+tr:hover {
+    background-color: var(--gumi-surface-hover);
+}
+
+// Images
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+// Icons (Base SVG styles)
+.icon {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    fill: currentColor;
+    vertical-align: middle;
+
+    &-sm {
+        width: 0.875em;
+        height: 0.875em;
+    }
+
+    &-lg {
+        width: 1.25em;
+        height: 1.25em;
+    }
+
+    &-xl {
+        width: 1.5em;
+        height: 1.5em;
+    }
+}

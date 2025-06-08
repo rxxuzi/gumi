@@ -1,0 +1,342 @@
+// _forms.scss
+// Gumi.css v1.0.0 - Form Elements
+
+// Base form elements
+input,
+textarea,
+select {
+    font-family: inherit;
+    font-size: var(--gumi-text-base);
+    padding: var(--gumi-space-3) var(--gumi-space-4);
+    border: 1px solid var(--gumi-border);
+    border-radius: var(--gumi-radius-base);
+    background-color: var(--gumi-surface);
+    color: var(--gumi-foreground);
+    width: 100%;
+    @include transition;
+
+    &:focus {
+        outline: none;
+        border-color: var(--gumi-primary);
+        box-shadow: 0 0 0 3px var(--gumi-primary-light);
+    }
+
+    &::placeholder {
+        color: var(--gumi-muted-dark);
+    }
+
+    &.error {
+        border-color: var(--gumi-error) !important;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+// Fix for browser autofill
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--gumi-foreground);
+    -webkit-box-shadow: 0 0 0px 1000px var(--gumi-surface) inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+// Textarea specific
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+// Select specific
+select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236e6e73' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--gumi-space-3) center;
+    background-size: 20px;
+    padding-right: var(--gumi-space-10);
+}
+
+// Checkbox and Radio
+input[type="checkbox"],
+input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    cursor: pointer;
+    margin-right: var(--gumi-space-2);
+    flex-shrink: 0;
+
+    &:checked {
+        accent-color: var(--gumi-primary);
+    }
+}
+
+input[type="radio"] {
+    border-radius: 50%;
+}
+
+// Label
+label {
+    display: block;
+    margin-bottom: var(--gumi-space-2);
+    font-weight: var(--gumi-font-medium);
+    color: var(--gumi-foreground);
+
+    &.inline {
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 0;
+        font-weight: var(--gumi-font-normal);
+    }
+}
+
+// Form group
+.form-group {
+    margin-bottom: var(--gumi-space-4);
+}
+
+// Form grid
+.form-grid {
+    display: grid;
+    gap: var(--gumi-space-4);
+
+    &-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    &-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include media-down('md') {
+        &-2,
+        &-3 {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+// Input group
+.input-group {
+    display: flex;
+    align-items: stretch;
+
+    input {
+        border-radius: 0;
+        flex: 1;
+
+        &:first-child {
+            border-top-left-radius: var(--gumi-radius-base);
+            border-bottom-left-radius: var(--gumi-radius-base);
+        }
+
+        &:last-child {
+            border-top-right-radius: var(--gumi-radius-base);
+            border-bottom-right-radius: var(--gumi-radius-base);
+        }
+    }
+
+    .input-group-text {
+        display: flex;
+        align-items: center;
+        padding: var(--gumi-space-3) var(--gumi-space-4);
+        background-color: var(--gumi-surface-hover);
+        border: 1px solid var(--gumi-border);
+        border-radius: 0;
+        color: var(--gumi-muted);
+        font-size: var(--gumi-text-sm);
+
+        &:first-child {
+            border-top-left-radius: var(--gumi-radius-base);
+            border-bottom-left-radius: var(--gumi-radius-base);
+            border-right: 0;
+        }
+
+        &:last-child {
+            border-top-right-radius: var(--gumi-radius-base);
+            border-bottom-right-radius: var(--gumi-radius-base);
+            border-left: 0;
+        }
+    }
+}
+
+// Switch/Toggle
+.switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gumi-space-2);
+    cursor: pointer;
+    user-select: none;
+
+    input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+
+        &:checked + .switch-slider {
+            background-color: var(--gumi-primary);
+            border-color: var(--gumi-primary);
+
+            &:before {
+                transform: translateX(20px);
+                background-color: white;
+            }
+        }
+
+        &:focus + .switch-slider {
+            outline: 2px solid var(--gumi-primary);
+            outline-offset: 2px;
+        }
+
+        &:disabled + .switch-slider {
+            opacity: 0.5;
+            cursor: not-allowed;
+
+            &:before {
+                opacity: 0.7;
+            }
+        }
+    }
+
+    &-slider {
+        position: relative;
+        width: 44px;
+        height: 24px;
+        background-color: var(--gumi-muted-alpha);
+        border: 1px solid var(--gumi-border);
+        border-radius: 12px;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        
+        &:before {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        &:hover:before {
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+    }
+
+    // Size variants
+    &.switch-sm {
+        .switch-slider {
+            width: 36px;
+            height: 20px;
+            border-radius: 10px;
+
+            &:before {
+                width: 14px;
+                height: 14px;
+                top: 2px;
+                left: 2px;
+            }
+        }
+
+        input:checked + .switch-slider:before {
+            transform: translateX(16px);
+        }
+    }
+
+    &.switch-lg {
+        .switch-slider {
+            width: 52px;
+            height: 28px;
+            border-radius: 14px;
+
+            &:before {
+                width: 22px;
+                height: 22px;
+                top: 2px;
+                left: 2px;
+            }
+        }
+
+        input:checked + .switch-slider:before {
+            transform: translateX(24px);
+        }
+    }
+}
+
+// Range input
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: var(--gumi-radius-full);
+    background: var(--gumi-surface);
+    outline: none;
+    padding: 0;
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--gumi-primary);
+        cursor: pointer;
+        @include transition;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+
+    &::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--gumi-primary);
+        cursor: pointer;
+        border: none;
+        @include transition;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}
+
+// File input
+input[type="file"] {
+    padding: var(--gumi-space-2);
+    background: transparent;
+    cursor: pointer;
+
+    &::file-selector-button {
+        padding: var(--gumi-space-2) var(--gumi-space-4);
+        margin-right: var(--gumi-space-3);
+        border: 1px solid var(--gumi-border);
+        border-radius: var(--gumi-radius-base);
+        background-color: var(--gumi-surface);
+        color: var(--gumi-foreground);
+        font-weight: var(--gumi-font-medium);
+        cursor: pointer;
+        @include transition;
+
+        &:hover {
+            background-color: var(--gumi-surface-hover);
+        }
+    }
+}

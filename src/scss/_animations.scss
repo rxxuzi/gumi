@@ -1,0 +1,384 @@
+// _animations.scss
+// Gumi.css v1.0.0 - Animations
+
+// Keyframes
+@keyframes gumi-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes gumi-fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes gumi-slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gumi-slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gumi-slide-left {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes gumi-slide-right {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes gumi-scale-in {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes gumi-scale-out {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+@keyframes gumi-rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes gumi-bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes gumi-shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-10px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(10px);
+    }
+}
+
+@keyframes gumi-pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes gumi-ping {
+    75%, 100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+@keyframes gumi-ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+// Animation classes
+.gumi {
+    &-fade-in {
+        animation: gumi-fade-in 0.6s ease-out;
+    }
+
+    &-fade-out {
+        animation: gumi-fade-out 0.3s ease-out;
+    }
+
+    &-slide-up {
+        animation: gumi-slide-up 0.6s ease-out;
+    }
+
+    &-slide-down {
+        animation: gumi-slide-down 0.6s ease-out;
+    }
+
+    &-slide-left {
+        animation: gumi-slide-left 0.6s ease-out;
+    }
+
+    &-slide-right {
+        animation: gumi-slide-right 0.6s ease-out;
+    }
+
+    &-scale-in {
+        animation: gumi-scale-in 0.3s ease-out;
+    }
+
+    &-scale-out {
+        animation: gumi-scale-out 0.3s ease-out;
+    }
+
+    &-rotate {
+        animation: gumi-rotate 2s linear infinite;
+    }
+
+    &-bounce {
+        animation: gumi-bounce 1s ease-in-out infinite;
+    }
+
+    &-shake {
+        animation: gumi-shake 0.5s ease-in-out;
+    }
+
+    &-pulse {
+        animation: gumi-pulse 2s ease-in-out infinite;
+    }
+
+    &-ping {
+        position: relative;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            background: inherit;
+            animation: gumi-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+    }
+}
+
+// Animation utilities
+.animate {
+    &-none {
+        animation: none;
+    }
+
+    &-spin {
+        animation: gumi-rotate 1s linear infinite;
+    }
+
+    &-ping {
+        animation: gumi-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    &-pulse {
+        animation: gumi-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    &-bounce {
+        animation: gumi-bounce 1s infinite;
+    }
+}
+
+// Animation delay utilities
+.delay {
+    &-75 {
+        animation-delay: 75ms;
+    }
+
+    &-100 {
+        animation-delay: 100ms;
+    }
+
+    &-150 {
+        animation-delay: 150ms;
+    }
+
+    &-200 {
+        animation-delay: 200ms;
+    }
+
+    &-300 {
+        animation-delay: 300ms;
+    }
+
+    &-500 {
+        animation-delay: 500ms;
+    }
+
+    &-700 {
+        animation-delay: 700ms;
+    }
+
+    &-1000 {
+        animation-delay: 1000ms;
+    }
+}
+
+// Animation duration utilities
+.duration {
+    &-75 {
+        animation-duration: 75ms;
+    }
+
+    &-100 {
+        animation-duration: 100ms;
+    }
+
+    &-150 {
+        animation-duration: 150ms;
+    }
+
+    &-200 {
+        animation-duration: 200ms;
+    }
+
+    &-300 {
+        animation-duration: 300ms;
+    }
+
+    &-500 {
+        animation-duration: 500ms;
+    }
+
+    &-700 {
+        animation-duration: 700ms;
+    }
+
+    &-1000 {
+        animation-duration: 1000ms;
+    }
+}
+
+// Transition utilities
+.transition {
+    @include transition;
+
+    &-none {
+        transition: none;
+    }
+
+    &-all {
+        transition: all var(--gumi-transition-base);
+    }
+
+    &-colors {
+        transition: background-color var(--gumi-transition-base),
+                    border-color var(--gumi-transition-base),
+                    color var(--gumi-transition-base),
+                    fill var(--gumi-transition-base),
+                    stroke var(--gumi-transition-base);
+    }
+
+    &-opacity {
+        transition: opacity var(--gumi-transition-base);
+    }
+
+    &-shadow {
+        transition: box-shadow var(--gumi-transition-base);
+    }
+
+    &-transform {
+        transition: transform var(--gumi-transition-base);
+    }
+}
+
+// Hover animation utilities
+.hover {
+    @include media('md') {
+        &\:scale-105:hover {
+            transform: scale(1.05);
+        }
+
+        &\:scale-110:hover {
+            transform: scale(1.1);
+        }
+
+        &\:rotate-3:hover {
+            transform: rotate(3deg);
+        }
+
+        &\:rotate-6:hover {
+            transform: rotate(6deg);
+        }
+
+        &\:rotate-12:hover {
+            transform: rotate(12deg);
+        }
+
+        &\:-rotate-3:hover {
+            transform: rotate(-3deg);
+        }
+
+        &\:-rotate-6:hover {
+            transform: rotate(-6deg);
+        }
+
+        &\:-rotate-12:hover {
+            transform: rotate(-12deg);
+        }
+
+        &\:translate-y-1:hover {
+            transform: translateY(-0.25rem);
+        }
+
+        &\:translate-y-2:hover {
+            transform: translateY(-0.5rem);
+        }
+    }
+}

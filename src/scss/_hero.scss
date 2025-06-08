@@ -1,0 +1,21 @@
+// Hero section with clean, minimal style
+
+.hero {
+    padding: var(--gumi-space-fluid-xl) 0;
+    text-align: center;
+    background: radial-gradient(ellipse at center, var(--gumi-primary-light) 0%, transparent 70%);
+}
+
+.hero h1 {
+    margin-bottom: var(--gumi-space-4);
+    background: linear-gradient(135deg, var(--gumi-foreground), var(--gumi-primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero p {
+    max-width: 600px;
+    margin: 0 auto var(--gumi-space-8);
+}
+

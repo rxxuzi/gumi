@@ -1,0 +1,174 @@
+// Code copy button styles
+
+.code-copy-btn {
+    position: absolute;
+    top: var(--gumi-space-2);
+    right: var(--gumi-space-2);
+    background: var(--gumi-bg-secondary);
+    border: 1px solid var(--gumi-border);
+    border-radius: var(--gumi-radius-sm);
+    padding: var(--gumi-space-2) var(--gumi-space-3);
+    color: var(--gumi-muted);
+    font-size: var(--gumi-text-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var(--gumi-space-1);
+    z-index: 10;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
+    box-shadow: var(--gumi-shadow-sm);
+    white-space: nowrap;
+    
+    &:hover {
+        background: var(--gumi-bg-primary);
+        color: var(--gumi-foreground);
+        border-color: var(--gumi-primary);
+        transform: translateY(-1px);
+        box-shadow: var(--gumi-shadow-sm);
+    }
+    
+    &:active {
+        transform: translateY(0);
+    }
+    
+    .copy-icon {
+        width: 14px;
+        height: 14px;
+        stroke-width: 2;
+    }
+    
+    .copy-text {
+        font-weight: var(--gumi-font-medium);
+    }
+    
+    &.success {
+        background: var(--gumi-success);
+        color: white;
+        border-color: var(--gumi-success);
+        
+        .copy-icon {
+            stroke: currentColor;
+        }
+    }
+    
+    &.error {
+        background: var(--gumi-error);
+        color: white;
+        border-color: var(--gumi-error);
+        
+        .copy-icon {
+            stroke: currentColor;
+        }
+    }
+}
+
+// Code block styling
+pre {
+    position: relative;
+    background: var(--gumi-bg-secondary);
+    border: 1px solid var(--gumi-border);
+    border-radius: var(--gumi-radius-base);
+    padding: var(--gumi-space-4);
+    overflow-x: auto;
+    
+    // Ensure there's space for the copy button
+    padding-top: calc(var(--gumi-space-4) + 2rem);
+    
+    code {
+        background: transparent;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+    }
+}
+
+.code-block {
+    position: relative;
+    background: var(--gumi-bg-secondary);
+    border: 1px solid var(--gumi-border);
+    border-radius: var(--gumi-radius-base);
+    padding: var(--gumi-space-4);
+    overflow-x: auto;
+    font-family: var(--gumi-font-mono);
+    font-size: var(--gumi-text-sm);
+    line-height: 1.6;
+    
+    // Ensure there's space for the copy button
+    padding-top: calc(var(--gumi-space-4) + 2rem);
+}
+
+// Inline code (no copy button)
+code:not(pre code) {
+    background: var(--gumi-bg-secondary);
+    border: 1px solid var(--gumi-border);
+    border-radius: var(--gumi-radius-sm);
+    padding: 0.2em 0.4em;
+    font-family: var(--gumi-font-mono);
+    font-size: 0.875em;
+    color: var(--gumi-primary);
+}
+
+// Dark theme adjustments
+[data-theme="dark"] {
+    .code-copy-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+        color: rgba(255, 255, 255, 0.7);
+        
+        &:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.9);
+            border-color: var(--gumi-primary);
+        }
+    }
+    
+    pre, .code-block {
+        background: rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    code:not(pre code) {
+        background: rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+// Animation for copy button appearance
+@keyframes copy-button-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.code-copy-btn {
+    animation: copy-button-fade-in 0.2s ease;
+}
+
+// Syntax highlighting support (if using a highlighter)
+.code-block, pre {
+    // Common syntax highlighting colors
+    .keyword { color: #7c3aed; }
+    .string { color: #059669; }
+    .comment { color: #6b7280; font-style: italic; }
+    .number { color: #dc2626; }
+    .function { color: #2563eb; }
+    .operator { color: #374151; }
+    .variable { color: #b45309; }
+    
+    // Dark theme syntax colors
+    [data-theme="dark"] & {
+        .keyword { color: #a78bfa; }
+        .string { color: #34d399; }
+        .comment { color: #9ca3af; }
+        .number { color: #f87171; }
+        .function { color: #60a5fa; }
+        .operator { color: #d1d5db; }
+        .variable { color: #fbbf24; }
+    }
+}

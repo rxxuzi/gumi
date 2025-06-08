@@ -1,0 +1,271 @@
+// _variables.scss
+// Gumi.css v1.0.0 - Variables and Mixins
+
+// Font Import
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+// CSS Variables - Light Theme (Default)
+:root {
+    // Colors
+    --gumi-bg-primary: #ffffff;
+    --gumi-bg-secondary: #f5f5f7;
+    --gumi-bg-tertiary: #e8e8ed;
+    --gumi-foreground: #000000;
+    --gumi-muted: #6e6e73;
+    --gumi-muted-dark: #86868b;
+    --gumi-primary: #007aff;
+    --gumi-primary-rgb: 0, 122, 255;
+    --gumi-primary-hover: #0051d5;
+    --gumi-primary-light: rgba(0, 122, 255, 0.1);
+    --gumi-secondary: #5ac8fa;
+    --gumi-success: #34c759;
+    --gumi-warning: #ff9500;
+    --gumi-error: #ff3b30;
+    --gumi-border: #d2d2d7;
+    --gumi-border-light: #e5e5ea;
+    --gumi-surface: #f5f5f7;
+    --gumi-surface-hover: #e8e8ed;
+    --gumi-surface-dark: #1d1d1f;
+    
+    // Typography
+    --gumi-font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    --gumi-font-mono: 'Geist Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+    
+    // Unified color aliases for easier overriding
+    --gumi-background: var(--gumi-bg-primary);
+    --gumi-muted-alpha: rgba(110, 110, 115, 0.1);
+    --gumi-border-dark: var(--gumi-border);
+    --gumi-foreground-dark: var(--gumi-foreground);
+
+    // Font Sizes - Fluid Typography
+    --gumi-text-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.8rem);
+    --gumi-text-sm: clamp(0.875rem, 0.8rem + 0.3vw, 0.95rem);
+    --gumi-text-base: clamp(1rem, 0.9rem + 0.4vw, 1.1rem);
+    --gumi-text-lg: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
+    --gumi-text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.4rem);
+    --gumi-text-2xl: clamp(1.5rem, 1.3rem + 0.8vw, 1.75rem);
+    --gumi-text-3xl: clamp(1.875rem, 1.6rem + 1vw, 2.25rem);
+    --gumi-text-4xl: clamp(2.25rem, 2rem + 1.2vw, 3rem);
+    --gumi-text-5xl: clamp(3rem, 2.5rem + 2vw, 4rem);
+
+    // Font Weights
+    --gumi-font-light: 300;
+    --gumi-font-normal: 400;
+    --gumi-font-medium: 500;
+    --gumi-font-semibold: 600;
+    --gumi-font-bold: 700;
+
+    // Line Heights
+    --gumi-leading-tight: 1.25;
+    --gumi-leading-normal: 1.5;
+    --gumi-leading-relaxed: 1.625;
+
+    // Spacing
+    --gumi-space-1: 0.25rem;
+    --gumi-space-2: 0.5rem;
+    --gumi-space-3: 0.75rem;
+    --gumi-space-4: 1rem;
+    --gumi-space-5: 1.25rem;
+    --gumi-space-6: 1.5rem;
+    --gumi-space-8: 2rem;
+    --gumi-space-10: 2.5rem;
+    --gumi-space-12: 3rem;
+    --gumi-space-16: 4rem;
+    --gumi-space-20: 5rem;
+    --gumi-space-24: 6rem;
+    --gumi-space-32: 8rem;
+
+    // Fluid Spacing
+    --gumi-space-fluid-xs: clamp(0.5rem, 1vw, 1rem);
+    --gumi-space-fluid-sm: clamp(1rem, 2vw, 2rem);
+    --gumi-space-fluid-md: clamp(2rem, 4vw, 4rem);
+    --gumi-space-fluid-lg: clamp(3rem, 6vw, 6rem);
+    --gumi-space-fluid-xl: clamp(4rem, 8vw, 8rem);
+
+    // Border Radius
+    --gumi-radius-sm: 0.375rem;
+    --gumi-radius-base: 0.625rem;
+    --gumi-radius-md: 0.875rem;
+    --gumi-radius-lg: 1.125rem;
+    --gumi-radius-xl: 1.5rem;
+    --gumi-radius-2xl: 2rem;
+    --gumi-radius-full: 9999px;
+
+    // Shadows - Light theme
+    --gumi-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --gumi-shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --gumi-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --gumi-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --gumi-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+    // Transitions
+    --gumi-transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --gumi-transition-base: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --gumi-transition-slow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    // Container Sizes
+    --gumi-container-sm: min(90%, 40rem);
+    --gumi-container-md: min(92%, 48rem);
+    --gumi-container-lg: min(94%, 64rem);
+    --gumi-container-xl: min(95%, 80rem);
+    --gumi-container-2xl: min(96%, 87.5rem);
+
+    // Z-Index
+    --gumi-z-dropdown: 1000;
+    --gumi-z-sticky: 1020;
+    --gumi-z-fixed: 1030;
+    --gumi-z-modal: 1040;
+    --gumi-z-popover: 1050;
+    --gumi-z-tooltip: 1060;
+
+    // Button specific colors
+    --gumi-btn-color: white;
+}
+
+// Dark theme
+[data-theme="dark"],
+.dark {
+    --gumi-bg-primary: #000000;
+    --gumi-bg-secondary: #1c1c1e;
+    --gumi-bg-tertiary: #2c2c2e;
+    --gumi-foreground: #ffffff;
+    --gumi-muted: #a1a1aa;
+    --gumi-muted-dark: #71717a;
+    --gumi-primary: #0a84ff;
+    --gumi-primary-rgb: 10, 132, 255;
+    --gumi-primary-hover: #0066cc;
+    --gumi-primary-light: rgba(10, 132, 255, 0.15);
+    --gumi-secondary: #64d2ff;
+    --gumi-success: #30d158;
+    --gumi-warning: #ff9f0a;
+    --gumi-error: #ff453a;
+    --gumi-border: #38383a;
+    --gumi-border-light: #48484a;
+    --gumi-surface: #1c1c1e;
+    --gumi-surface-hover: #2c2c2e;
+    --gumi-surface-dark: #000000;
+    
+    // Unified color aliases for dark theme
+    --gumi-background: var(--gumi-bg-primary);
+    --gumi-muted-alpha: rgba(161, 161, 170, 0.15);
+    --gumi-border-dark: #48484a;
+    --gumi-foreground-dark: #e5e5e7;
+    
+    // Shadows - Dark theme
+    --gumi-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --gumi-shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.4);
+    --gumi-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+    --gumi-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+    --gumi-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+}
+
+// Mixins
+@mixin transition($property: all) {
+    transition: $property var(--gumi-transition-base);
+}
+
+@mixin focus-ring {
+    &:focus {
+        outline: 2px solid var(--gumi-primary);
+        outline-offset: 2px;
+    }
+
+    &:focus:not(:focus-visible) {
+        outline: none;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--gumi-primary);
+        outline-offset: 2px;
+    }
+}
+
+@mixin hover-lift {
+    @include transition(transform);
+    
+    &:hover {
+        transform: translateY(-2px);
+    }
+    
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+@mixin responsive-container {
+    max-width: var(--gumi-container-xl);
+    margin: 0 auto;
+    padding: 0 var(--gumi-space-fluid-sm);
+    width: 100%;
+}
+
+// Breakpoints
+$breakpoints: (
+    'sm': 640px,
+    'md': 768px,
+    'lg': 1024px,
+    'xl': 1280px,
+    '2xl': 1536px
+);
+
+@mixin media($breakpoint) {
+    @if map-has-key($breakpoints, $breakpoint) {
+        @media (min-width: map-get($breakpoints, $breakpoint)) {
+            @content;
+        }
+    }
+}
+
+@mixin media-down($breakpoint) {
+    @if map-has-key($breakpoints, $breakpoint) {
+        @media (max-width: #{map-get($breakpoints, $breakpoint) - 1px}) {
+            @content;
+        }
+    }
+}
+
+@mixin media-between($min-breakpoint, $max-breakpoint) {
+    @if map-has-key($breakpoints, $min-breakpoint) and map-has-key($breakpoints, $max-breakpoint) {
+        @media (min-width: map-get($breakpoints, $min-breakpoint)) and (max-width: #{map-get($breakpoints, $max-breakpoint) - 1px}) {
+            @content;
+        }
+    }
+}
+
+// Utility mixins for user customization
+@mixin gumi-component($name) {
+    .#{$name} {
+        @content;
+    }
+}
+
+@mixin gumi-variant($component, $variant) {
+    .#{$component}-#{$variant} {
+        @content;
+    }
+}
+
+@mixin gumi-hover-effect($transform: translateY(-2px), $shadow: var(--gumi-shadow-md)) {
+    @include transition(all);
+    
+    &:hover {
+        transform: $transform;
+        box-shadow: $shadow;
+    }
+    
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+// Helper function for creating custom button variants
+@mixin gumi-button-variant($bg-color, $text-color: white, $hover-bg: darken($bg-color, 10%)) {
+    background: $bg-color;
+    color: $text-color;
+    border-color: $bg-color;
+    
+    &:hover {
+        background: $hover-bg;
+        border-color: $hover-bg;
+    }
+}
