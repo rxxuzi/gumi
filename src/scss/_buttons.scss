@@ -1,188 +1,336 @@
 // _buttons.scss
-// Gumi.css v1.0.0 - Buttons
+// Gumi.css v1.0.0
 
-// Base button styles
+// Base button
 .btn {
-    font-family: inherit;
-    font-size: var(--gumi-text-base);
-    font-weight: var(--gumi-font-medium);
-    padding: var(--gumi-space-3) var(--gumi-space-6);
-    border: none;
-    border-radius: var(--gumi-radius-base);
-    background-color: var(--gumi-primary);
-    color: white;
-    cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--gumi-space-2);
+    white-space: nowrap;
+    border-radius: var(--gumi-radius-md);
+    font-size: var(--gumi-text-sm);
+    font-weight: var(--gumi-font-medium);
+    font-family: inherit;
+    line-height: 1;
+    height: 2.5rem;
+    padding: 0 1rem;
+    border: 1px solid transparent;
+    cursor: pointer;
     text-decoration: none;
-    min-height: 44px;
-    position: relative;
-    overflow: hidden;
-    @include transition;
+    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    
+    @include focus-ring;
+    
+    &:disabled {
+        pointer-events: none;
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    // Default style - foreground bg with background text (inverted)
+    background-color: var(--gumi-foreground);
+    color: var(--gumi-background);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    
+    &:hover:not(:disabled) {
+        opacity: 0.9;
+    }
+    
+    &:active:not(:disabled) {
+        opacity: 0.8;
+    }
+}
 
+// Size modifiers
+.btn.btn-sm {
+    height: 2rem;
+    padding: 0 0.75rem;
+    font-size: var(--gumi-text-xs);
+}
+
+.btn.btn-lg {
+    height: 3rem;
+    padding: 0 1.5rem;
+    font-size: var(--gumi-text-base);
+}
+
+// Icon button
+.btn.btn-icon {
+    width: 2.5rem;
+    padding: 0;
+    
+    &.btn-sm {
+        width: 2rem;
+        height: 2rem;
+    }
+    
+    &.btn-lg {
+        width: 3rem;
+        height: 3rem;
+    }
+}
+
+// Secondary variant
+.btn.btn-secondary {
+    background-color: var(--gumi-bg-secondary);
+    color: var(--gumi-foreground);
+    box-shadow: none;
+    
+    &:hover:not(:disabled) {
+        background-color: var(--gumi-bg-tertiary);
+    }
+    
+    &:active:not(:disabled) {
+        background-color: var(--gumi-bg-tertiary);
+        opacity: 0.9;
+    }
+}
+
+// Outline variant
+.btn.btn-outline {
+    background-color: transparent;
+    color: var(--gumi-foreground);
+    border: 2px solid var(--gumi-foreground);
+    box-shadow: none;
+    
+    &:hover:not(:disabled) {
+        background-color: var(--gumi-hover-darken);
+    }
+    
+    &:active:not(:disabled) {
+        background-color: var(--gumi-active-darken);
+    }
+}
+
+// Ghost variant
+.btn.btn-ghost {
+    background-color: transparent;
+    color: var(--gumi-foreground);
+    border: 1px solid transparent;
+    box-shadow: none;
+    
+    &:hover:not(:disabled) {
+        background-color: var(--gumi-bg-secondary);
+    }
+    
+    &:active:not(:disabled) {
+        background-color: var(--gumi-bg-tertiary);
+    }
+}
+
+// Link variant
+.btn.btn-link {
+    background-color: transparent;
+    color: var(--gumi-primary);
+    border: 1px solid transparent;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    height: auto;
+    box-shadow: none;
+    
     &:hover:not(:disabled) {
         opacity: 0.8;
     }
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none !important;
+    
+    &:active:not(:disabled) {
+        opacity: 0.6;
     }
+}
 
-    // Loading state
-    &[data-loading="true"] {
-        color: transparent;
-        pointer-events: none;
+// Destructive variant
+.btn.btn-destructive {
+    background-color: var(--gumi-error);
+    color: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    
+    &:hover:not(:disabled) {
+        opacity: 0.9;
+    }
+    
+    &:active:not(:disabled) {
+        opacity: 0.8;
+    }
+}
 
-        .spinner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+// Success variant
+.btn.btn-success {
+    background-color: var(--gumi-success);
+    color: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    
+    &:hover:not(:disabled) {
+        opacity: 0.9;
+    }
+    
+    &:active:not(:disabled) {
+        opacity: 0.8;
+    }
+}
+
+// Warning variant
+.btn.btn-warning {
+    background-color: var(--gumi-warning);
+    color: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    
+    &:hover:not(:disabled) {
+        opacity: 0.9;
+    }
+    
+    &:active:not(:disabled) {
+        opacity: 0.8;
+    }
+}
+
+// Loading state
+.btn[data-loading="true"] {
+    position: relative;
+    color: transparent !important;
+    pointer-events: none;
+    
+    &::after {
+        content: "";
+        position: absolute;
+        width: 1rem;
+        height: 1rem;
+        top: 50%;
+        left: 50%;
+        margin-left: -0.5rem;
+        margin-top: -0.5rem;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        animation: button-loading-spinner 0.8s linear infinite;
+    }
+    
+    &::before {
+        content: "";
+        position: absolute;
+        width: 1rem;
+        height: 1rem;
+        top: 50%;
+        left: 50%;
+        margin-left: -0.5rem;
+        margin-top: -0.5rem;
+        border: 2px solid transparent;
+        border-top-color: currentColor;
+        border-radius: 50%;
+        animation: button-loading-spinner 0.8s linear infinite;
+    }
+}
+
+// Loading colors for default button
+.btn[data-loading="true"]:not(.btn-secondary):not(.btn-outline):not(.btn-ghost):not(.btn-link):not(.btn-destructive):not(.btn-success):not(.btn-warning) {
+    &::before {
+        border-top-color: var(--gumi-background);
+    }
+}
+
+// Loading colors for light background buttons
+.btn.btn-secondary[data-loading="true"],
+.btn.btn-ghost[data-loading="true"] {
+    &::after {
+        border-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    &::before {
+        border-top-color: var(--gumi-foreground);
+    }
+}
+
+// Loading colors for outline button
+.btn.btn-outline[data-loading="true"] {
+    &::after {
+        border-color: transparent;
+    }
+    
+    &::before {
+        border-top-color: var(--gumi-foreground);
+    }
+}
+
+@keyframes button-loading-spinner {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+// Button group
+.btn-group {
+    display: inline-flex;
+    
+    > .btn {
+        &:not(:first-child) {
+            margin-left: -1px;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
         }
-    }
-
-    // Variants
-    &-secondary {
-        background-color: var(--gumi-surface);
-        color: var(--gumi-foreground);
-        border: 1px solid var(--gumi-border);
-
-        &:hover {
-            background-color: var(--gumi-surface-hover);
-            border-color: var(--gumi-border-light);
+        
+        &:not(:last-child) {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
         }
-    }
-
-    &-outline {
-        background-color: transparent;
-        color: var(--gumi-primary);
-        border: 1px solid var(--gumi-primary);
-
-        &:hover {
-            background-color: var(--gumi-primary);
-            color: white;
-        }
-    }
-
-    &-ghost {
-        background-color: transparent;
-        color: var(--gumi-foreground);
-        border: none;
-
-        &:hover {
-            background-color: var(--gumi-surface);
-        }
-    }
-
-    &-success {
-        background-color: var(--gumi-success);
-        color: white;
-
-        &:hover {
-            background-color: var(--gumi-success);
-            filter: brightness(0.9);
-        }
-    }
-
-    &-warning {
-        background-color: var(--gumi-warning);
-        color: white;
-
-        &:hover {
-            background-color: var(--gumi-warning);
-            filter: brightness(0.9);
-        }
-    }
-
-    &-error {
-        background-color: var(--gumi-error);
-        color: white;
-
-        &:hover {
-            background-color: var(--gumi-error);
-            filter: brightness(0.9);
-        }
-    }
-
-    // Sizes
-    &-sm {
-        padding: var(--gumi-space-2) var(--gumi-space-4);
-        font-size: var(--gumi-text-sm);
-        min-height: 36px;
-    }
-
-    &-lg {
-        padding: var(--gumi-space-4) var(--gumi-space-8);
-        font-size: var(--gumi-text-lg);
-        min-height: 52px;
-    }
-
-    // Icon button
-    &-icon {
-        padding: var(--gumi-space-3);
-        min-width: 44px;
-
-        &.btn-sm {
-            padding: var(--gumi-space-2);
-            min-width: 36px;
-            min-height: 36px;
-        }
-
-        &.btn-lg {
-            padding: var(--gumi-space-4);
-            min-width: 52px;
-            min-height: 52px;
-        }
-    }
-
-    // Full width
-    &-block {
-        width: 100%;
-    }
-
-    // Button group
-    &-group {
-        display: inline-flex;
-
-        .btn {
-            border-radius: 0;
-            margin: 0;
-
-            &:first-child {
-                border-top-left-radius: var(--gumi-radius-base);
-                border-bottom-left-radius: var(--gumi-radius-base);
-            }
-
-            &:last-child {
-                border-top-right-radius: var(--gumi-radius-base);
-                border-bottom-right-radius: var(--gumi-radius-base);
-            }
-
-            &:not(:last-child) {
-                border-right: 1px solid rgba(0, 0, 0, 0.1);
-            }
-
-            &.btn-outline:not(:last-child) {
-                border-right: 1px solid var(--gumi-primary);
-            }
+        
+        &:hover,
+        &:focus {
+            z-index: 1;
         }
     }
 }
 
-// Floating Action Button
+// Icon in button
+.btn svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.btn.btn-sm svg {
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+.btn.btn-lg svg {
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+// With icon
+.btn-with-icon {
+    gap: 0.5rem;
+}
+
+// Full width
+.btn-block {
+    width: 100%;
+}
+
+// Dark mode adjustments
+[data-theme="dark"] {
+    // Outline in dark mode - use hover lighten effect
+    .btn.btn-outline {
+        &:hover:not(:disabled) {
+            background-color: var(--gumi-hover-lighten);
+        }
+        
+        &:active:not(:disabled) {
+            background-color: var(--gumi-active-lighten);
+        }
+    }
+}
+
+// FAB
 .fab {
     position: fixed;
     bottom: var(--gumi-space-6);
     right: var(--gumi-space-6);
-    width: 56px;
-    height: 56px;
+    width: 3.5rem;
+    height: 3.5rem;
     border-radius: var(--gumi-radius-full);
-    background-color: var(--gumi-primary);
-    color: white;
+    background-color: var(--gumi-foreground);
+    color: var(--gumi-background);
     border: none;
     cursor: pointer;
     display: flex;
@@ -190,18 +338,18 @@
     justify-content: center;
     box-shadow: var(--gumi-shadow-lg);
     z-index: var(--gumi-z-fixed);
-    @include transition;
-    @include hover-lift;
-
+    transition: all 150ms ease;
+    
     &:hover {
+        opacity: 0.9;
         box-shadow: var(--gumi-shadow-xl);
     }
-
+    
     &.fab-sm {
-        width: 40px;
-        height: 40px;
+        width: 2.5rem;
+        height: 2.5rem;
     }
-
+    
     &.fab-extended {
         width: auto;
         padding: 0 var(--gumi-space-6);
@@ -213,24 +361,24 @@
 .btn-close {
     background: transparent;
     border: none;
-    width: 32px;
-    height: 32px;
+    width: 2rem;
+    height: 2rem;
     padding: 0;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: var(--gumi-radius-base);
+    border-radius: var(--gumi-radius-sm);
     color: var(--gumi-muted);
-    @include transition;
-
+    transition: all 150ms ease;
+    
     &:hover {
-        background-color: var(--gumi-surface);
+        background-color: var(--gumi-bg-secondary);
         color: var(--gumi-foreground);
     }
-
+    
     svg {
-        width: 20px;
-        height: 20px;
+        width: 1.25rem;
+        height: 1.25rem;
     }
 }

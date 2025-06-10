@@ -61,6 +61,7 @@ pre {
     margin-bottom: var(--gumi-space-4);
     border: 1px solid var(--gumi-border);
     line-height: var(--gumi-leading-relaxed);
+    position: relative;
 
     code {
         background: none;

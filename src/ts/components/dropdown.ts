@@ -193,9 +193,17 @@ export class Dropdown {
             }
         };
         
+        // Scroll handler to update position
+        const scrollHandler = () => {
+            if (this.isOpen) {
+                this.positionMenu();
+            }
+        };
+        
         on(this.menu, 'click', menuClickHandler);
         this.eventHandlers.set('document-click', documentClickHandler);
         this.eventHandlers.set('menu-click', menuClickHandler);
+        this.eventHandlers.set('scroll', scrollHandler);
     }
 
     /**
@@ -299,6 +307,13 @@ export class Dropdown {
             }, 0);
         }
         
+        // Add scroll listener
+        const scrollHandler = this.eventHandlers.get('scroll');
+        if (scrollHandler) {
+            on(window, 'scroll', scrollHandler);
+            on(window, 'resize', scrollHandler);
+        }
+        
         // Dispatch event
         trigger(this.trigger, 'dropdown:show', { dropdown: this });
     }
@@ -330,6 +345,13 @@ export class Dropdown {
         const documentClickHandler = this.eventHandlers.get('document-click');
         if (documentClickHandler) {
             off(document, 'click', documentClickHandler);
+        }
+        
+        // Remove scroll listener
+        const scrollHandler = this.eventHandlers.get('scroll');
+        if (scrollHandler) {
+            off(window, 'scroll', scrollHandler);
+            off(window, 'resize', scrollHandler);
         }
         
         // Dispatch event
@@ -484,6 +506,9 @@ export class Dropdown {
             } else if (event === 'keydown') {
                 off(this.trigger, 'keydown', handler);
                 off(this.menu, 'keydown', handler);
+            } else if (event === 'scroll') {
+                off(window, 'scroll', handler);
+                off(window, 'resize', handler);
             } else {
                 off(this.trigger, event.split('-')[0], handler);
             }

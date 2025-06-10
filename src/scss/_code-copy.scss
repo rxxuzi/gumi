@@ -7,18 +7,21 @@
     background: var(--gumi-bg-secondary);
     border: 1px solid var(--gumi-border);
     border-radius: var(--gumi-radius-sm);
-    padding: var(--gumi-space-2) var(--gumi-space-3);
+    padding: var(--gumi-space-2);
     color: var(--gumi-muted);
     font-size: var(--gumi-text-sm);
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: var(--gumi-space-1);
     z-index: 10;
     transition: all 0.2s ease;
     backdrop-filter: blur(8px);
     box-shadow: var(--gumi-shadow-sm);
     white-space: nowrap;
+    width: 32px;
+    height: 32px;
     
     &:hover {
         background: var(--gumi-bg-primary);
@@ -33,13 +36,9 @@
     }
     
     .copy-icon {
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
         stroke-width: 2;
-    }
-    
-    .copy-text {
-        font-weight: var(--gumi-font-medium);
     }
     
     &.success {
@@ -72,9 +71,6 @@ pre {
     padding: var(--gumi-space-4);
     overflow-x: auto;
     
-    // Ensure there's space for the copy button
-    padding-top: calc(var(--gumi-space-4) + 2rem);
-    
     code {
         background: transparent;
         padding: 0;
@@ -93,9 +89,6 @@ pre {
     font-family: var(--gumi-font-mono);
     font-size: var(--gumi-text-sm);
     line-height: 1.6;
-    
-    // Ensure there's space for the copy button
-    padding-top: calc(var(--gumi-space-4) + 2rem);
 }
 
 // Inline code (no copy button)

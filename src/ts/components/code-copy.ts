@@ -53,14 +53,14 @@ export class CodeCopy {
         this.button = dom.createElement('button', {
             className: this.options.buttonClass!,
             attributes: {
-                title: this.options.copyText!
+                title: this.options.copyText!,
+                'aria-label': this.options.copyText!
             },
             html: `
                 <svg class="${this.options.iconClass}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="m5 15-1-1V6a2 2 0 0 1 2-2h8"></path>
                 </svg>
-                <span class="copy-text">${this.options.copyText}</span>
             `
         }) as HTMLElement;
 
@@ -162,11 +162,7 @@ export class CodeCopy {
     }
 
     private showSuccess(): void {
-        // Update button text temporarily
-        const textSpan = this.button.querySelector('.copy-text') as HTMLElement;
-        const originalText = textSpan.textContent || '';
-        
-        textSpan.textContent = this.options.successText!;
+        // Just add success class, keep the same icon
         dom.addClass(this.button, 'success');
 
         // Show toast if enabled
@@ -176,17 +172,12 @@ export class CodeCopy {
 
         // Reset after 2 seconds
         setTimeout(() => {
-            textSpan.textContent = originalText;
             dom.removeClass(this.button, 'success');
         }, 2000);
     }
 
     private showError(): void {
-        // Update button text temporarily
-        const textSpan = this.button.querySelector('.copy-text') as HTMLElement;
-        const originalText = textSpan.textContent || '';
-        
-        textSpan.textContent = this.options.errorText!;
+        // Just add error class, keep the same icon
         dom.addClass(this.button, 'error');
 
         // Show toast if enabled
@@ -196,7 +187,6 @@ export class CodeCopy {
 
         // Reset after 2 seconds
         setTimeout(() => {
-            textSpan.textContent = originalText;
             dom.removeClass(this.button, 'error');
         }, 2000);
     }

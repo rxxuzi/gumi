@@ -118,8 +118,12 @@
     --gumi-z-popover: 1050;
     --gumi-z-tooltip: 1060;
 
-    // Button specific colors
-    --gumi-btn-color: white;
+
+    // Interaction states
+    --gumi-hover-darken: rgba(0, 0, 0, 0.1);
+    --gumi-hover-lighten: rgba(255, 255, 255, 0.1);
+    --gumi-active-darken: rgba(0, 0, 0, 0.2);
+    --gumi-active-lighten: rgba(255, 255, 255, 0.2);
 }
 
 // Dark theme
