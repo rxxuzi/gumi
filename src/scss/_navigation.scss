@@ -10,29 +10,53 @@
     position: absolute;
     top: 100%;
     left: 0;
-    background: var(--gumi-surface);
+    background: var(--gumi-bg-primary);
     border: 1px solid var(--gumi-border);
     border-radius: var(--gumi-radius-lg);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -2px rgba(0, 0, 0, 0.1),
+        0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 8px 10px -6px rgba(0, 0, 0, 0.1);
     min-width: 200px;
     z-index: var(--gumi-z-dropdown);
     display: none;
     opacity: 0;
-    transform: translateY(-8px);
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: var(--gumi-space-2) 0;
+    transform: translateY(-10px) scale(0.95);
+    transform-origin: top center;
+    padding: var(--gumi-space-2);
+    backdrop-filter: blur(10px);
+    
+    // Glass effect for modern look
+    background: rgba(255, 255, 255, 0.95);
+    
+    @supports (backdrop-filter: blur(10px)) {
+        background: rgba(255, 255, 255, 0.85);
+    }
     
     &.show {
         display: block;
-        opacity: 1;
-        transform: translateY(0);
+    }
+}
+
+// Dark theme glass effect
+[data-theme="dark"] {
+    .dropdown-menu {
+        background: rgba(28, 28, 30, 0.95);
+        border-color: rgba(255, 255, 255, 0.1);
+        
+        @supports (backdrop-filter: blur(10px)) {
+            background: rgba(28, 28, 30, 0.9);
+        }
     }
 }
 
 .dropdown-item {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: var(--gumi-space-3);
     width: 100%;
-    padding: var(--gumi-space-3) var(--gumi-space-5);
+    padding: var(--gumi-space-3) var(--gumi-space-4);
     color: var(--gumi-foreground);
     text-decoration: none;
     border: none;
@@ -40,65 +64,249 @@
     cursor: pointer;
     font-size: var(--gumi-text-base);
     font-weight: var(--gumi-font-normal);
-    transition: all 0.2s ease;
-    border-radius: 0;
-    margin: 0 var(--gumi-space-1);
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: var(--gumi-radius-base);
+    margin: var(--gumi-space-1) 0;
+    position: relative;
+    overflow: hidden;
     
-    &:first-child {
-        border-top-left-radius: var(--gumi-radius-base);
-        border-top-right-radius: var(--gumi-radius-base);
-    }
-    
-    &:last-child {
-        border-bottom-left-radius: var(--gumi-radius-base);
-        border-bottom-right-radius: var(--gumi-radius-base);
+    // Modern hover effect
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--gumi-primary);
+        opacity: 0;
+        transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: -1;
     }
     
     &:hover,
     &:focus {
-        background-color: var(--gumi-primary);
-        color: white;
+        color: var(--gumi-foreground);
         outline: none;
-        border-radius: var(--gumi-radius-base);
+        transform: translateX(2px);
+        
+        &::before {
+            opacity: 0.08;
+        }
+    }
+    
+    &:active {
+        transform: translateX(2px) scale(0.98);
+        
+        &::before {
+            opacity: 0.12;
+        }
     }
     
     &.active {
-        background-color: var(--gumi-primary);
-        color: white;
-        border-radius: var(--gumi-radius-base);
+        color: var(--gumi-primary);
+        font-weight: var(--gumi-font-medium);
+        
+        &::before {
+            opacity: 0.1;
+        }
     }
     
     &:disabled {
         color: var(--gumi-muted);
         cursor: not-allowed;
+        opacity: 0.5;
         
         &:hover {
-            background-color: transparent;
-            color: var(--gumi-muted);
+            transform: none;
+            
+            &::before {
+                opacity: 0;
+            }
+        }
+    }
+    
+    // Icons in dropdown items
+    .dropdown-item-icon {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        opacity: 0.8;
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    
+    // Labels and badges
+    .dropdown-item-label {
+        flex: 1;
+        text-align: left;
+    }
+    
+    .dropdown-item-badge {
+        margin-left: auto;
+        font-size: var(--gumi-text-xs);
+        padding: var(--gumi-space-1) var(--gumi-space-2);
+        background: var(--gumi-primary);
+        color: white;
+        border-radius: var(--gumi-radius-full);
+        line-height: 1;
+    }
+}
+
+// Dropdown divider with modern style
+.dropdown-divider {
+    height: 1px;
+    margin: var(--gumi-space-3) var(--gumi-space-2);
+    background: linear-gradient(
+        to right,
+        transparent,
+        var(--gumi-border) 20%,
+        var(--gumi-border) 80%,
+        transparent
+    );
+}
+
+// Dropdown header with modern style
+.dropdown-header {
+    display: block;
+    padding: var(--gumi-space-2) var(--gumi-space-4);
+    margin-bottom: var(--gumi-space-2);
+    color: var(--gumi-muted);
+    font-size: var(--gumi-text-xs);
+    font-weight: var(--gumi-font-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+}
+
+// Dropdown trigger enhancements
+.dropdown-trigger,
+[data-dropdown] {
+    position: relative;
+    
+    .dropdown-icon,
+    .dropdown-arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        margin-left: var(--gumi-space-2);
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        
+        svg {
+            width: 14px;
+            height: 14px;
+        }
+    }
+    
+    &[aria-expanded="true"] {
+        .dropdown-icon,
+        .dropdown-arrow {
+            transform: rotate(180deg);
         }
     }
 }
 
-.dropdown-divider {
-    height: 1px;
-    background-color: var(--gumi-border);
-    margin: var(--gumi-space-2) 0;
+// Compact dropdown variant
+.dropdown-menu-compact {
+    padding: var(--gumi-space-1);
+    
+    .dropdown-item {
+        padding: var(--gumi-space-2) var(--gumi-space-3);
+        font-size: var(--gumi-text-sm);
+        margin: 2px 0;
+    }
+    
+    .dropdown-divider {
+        margin: var(--gumi-space-2) var(--gumi-space-1);
+    }
 }
 
-.dropdown-header {
-    padding: var(--gumi-space-2) var(--gumi-space-4);
-    font-size: var(--gumi-text-sm);
-    font-weight: var(--gumi-font-medium);
-    color: var(--gumi-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+// Wide dropdown variant
+.dropdown-menu-wide {
+    min-width: 300px;
 }
 
-// Accordion
+// Dropdown with icons grid
+.dropdown-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gumi-space-2);
+    padding: var(--gumi-space-3);
+    
+    .dropdown-item {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--gumi-space-3);
+        
+        .dropdown-item-icon {
+            width: 32px;
+            height: 32px;
+            margin-bottom: var(--gumi-space-2);
+        }
+    }
+}
+
+// Dropdown alignment variants
+.dropdown-menu-end {
+    right: 0;
+    left: auto;
+}
+
+.dropdown-menu-center {
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px) scale(0.95);
+    
+    &.show {
+        transform: translateX(-50%) translateY(0) scale(1);
+    }
+}
+
+// Mobile responsive dropdown
+@media (max-width: 640px) {
+    .dropdown-menu {
+        position: fixed;
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100%;
+        max-width: 100%;
+        border-radius: var(--gumi-radius-lg) var(--gumi-radius-lg) 0 0;
+        transform: translateY(100%);
+        box-shadow: 
+            0 -20px 25px -5px rgba(0, 0, 0, 0.1),
+            0 -8px 10px -6px rgba(0, 0, 0, 0.1);
+        
+        &.show {
+            transform: translateY(0);
+        }
+        
+        // Add drag handle
+        &::before {
+            content: '';
+            position: absolute;
+            top: var(--gumi-space-2);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background: var(--gumi-border);
+            border-radius: var(--gumi-radius-full);
+        }
+    }
+}
+
+// Accordion with modern style
 .accordion {
     border: 1px solid var(--gumi-border);
-    border-radius: var(--gumi-radius-base);
+    border-radius: var(--gumi-radius-lg);
     overflow: hidden;
+    background: var(--gumi-bg-primary);
 }
 
 .accordion-item {
@@ -112,7 +320,7 @@
 .accordion-header {
     width: 100%;
     padding: var(--gumi-space-4) var(--gumi-space-6);
-    background: var(--gumi-bg-primary);
+    background: transparent;
     border: none;
     text-align: left;
     cursor: pointer;
@@ -121,14 +329,35 @@
     justify-content: space-between;
     font-weight: var(--gumi-font-medium);
     color: var(--gumi-foreground);
-    transition: background-color 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: var(--gumi-primary);
+        transform: scaleY(0);
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
     
     &:hover {
         background-color: var(--gumi-surface-hover);
     }
     
+    &.active {
+        color: var(--gumi-foreground);
+        
+        &::before {
+            transform: scaleY(1);
+        }
+    }
+    
     .accordion-icon {
-        transition: transform 0.2s ease;
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         
         svg {
             width: 20px;
@@ -147,7 +376,10 @@
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+    transition: 
+        max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
     p {
         margin-bottom: var(--gumi-space-4);
@@ -171,6 +403,7 @@
     display: flex;
     border-bottom: 1px solid var(--gumi-border);
     margin-bottom: var(--gumi-space-4);
+    position: relative;
 }
 
 .tab-button {
@@ -181,7 +414,20 @@
     cursor: pointer;
     font-weight: var(--gumi-font-medium);
     color: var(--gumi-muted);
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--gumi-primary);
+        transform: scaleX(0);
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
     
     &:hover {
         color: var(--gumi-foreground);
@@ -190,7 +436,10 @@
     
     &.active {
         color: var(--gumi-primary);
-        border-bottom-color: var(--gumi-primary);
+        
+        &::after {
+            transform: scaleX(1);
+        }
     }
 }
 

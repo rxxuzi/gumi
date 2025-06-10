@@ -1,17 +1,16 @@
 // components/dropdown.ts
-// Gumi.js v1.0.0 - Dropdown Component
+// Gumi.js v1.0.0 - Dropdown Component (Simplified)
 
 import { DropdownOptions, GumiElement } from '../types';
 import { $, $$, on, off, trigger, addClass, removeClass, hasClass } from '../core/dom';
-import { fadeIn, fadeOut } from '../core/animation';
-import { icons } from '../utils/icons';
 
 export class Dropdown {
     private trigger: HTMLElement;
     private menu: HTMLElement;
     private options: DropdownOptions;
     private isOpen: boolean = false;
-    private eventHandlers: Map<string, (e: Event) => void> = new Map();
+    private clickHandler?: (e: Event) => void;
+    private documentClickHandler?: (e: Event) => void;
 
     constructor(trigger: GumiElement, menuOrOptions?: GumiElement | DropdownOptions, options?: DropdownOptions) {
         const triggerEl = $(trigger);
@@ -37,23 +36,15 @@ export class Dropdown {
 
     private getDefaultOptions(): DropdownOptions {
         return {
-            placement: 'bottom-start',
-            offset: 8,
+            trigger: 'hover', // Default to hover for simplicity
             closeOnClick: true,
-            keyboard: true,
-            hover: false,
-            multiLevel: false,
-            trigger: 'click'
+            keyboard: true
         };
     }
 
-    /**
-     * Find dropdown menu
-     */
     private findMenu(): HTMLElement {
-        // Find dropdown menu by data attribute or aria-controls
-        const menuId = this.trigger.getAttribute('data-dropdown') || 
-                      this.trigger.getAttribute('aria-controls');
+        // Find dropdown menu by data attribute or next sibling
+        const menuId = this.trigger.getAttribute('data-dropdown');
         
         if (menuId) {
             const menu = $(menuId);
@@ -67,300 +58,135 @@ export class Dropdown {
         }
         
         // Look for menu in parent container
-        menu = this.trigger.parentElement?.querySelector('.dropdown-menu') as HTMLElement;
-        if (menu) return menu;
+        const parent = this.trigger.closest('.dropdown');
+        if (parent) {
+            menu = parent.querySelector('.dropdown-menu') as HTMLElement;
+            if (menu) return menu;
+        }
         
         throw new Error('Dropdown menu not found');
     }
 
-    /**
-     * Initialize dropdown
-     */
     private init(): void {
-        // Set ARIA attributes
+        // Add wrapper if needed
+        const parent = this.trigger.parentElement;
+        if (!parent || !hasClass(parent, 'dropdown')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'dropdown';
+            
+            // Add click modifier if needed
+            if (this.options.trigger === 'click') {
+                wrapper.className += ' dropdown-click';
+            }
+            
+            this.trigger.parentNode?.insertBefore(wrapper, this.trigger);
+            wrapper.appendChild(this.trigger);
+            wrapper.appendChild(this.menu);
+        } else if (this.options.trigger === 'click') {
+            addClass(parent, 'dropdown-click');
+        }
+        
+        // For click-based dropdowns, bind events
+        if (this.options.trigger === 'click') {
+            this.bindClickEvents();
+        }
+        
+        // Keyboard navigation (minimal)
+        if (this.options.keyboard) {
+            this.bindKeyboardEvents();
+        }
+        
+        // Setup ARIA attributes
         this.trigger.setAttribute('role', 'button');
         this.trigger.setAttribute('aria-haspopup', 'true');
         this.trigger.setAttribute('aria-expanded', 'false');
-        if (!this.trigger.id) this.trigger.id = `dropdown-trigger-${Date.now()}`;
         
         this.menu.setAttribute('role', 'menu');
-        this.menu.setAttribute('aria-labelledby', this.trigger.id);
-        
-        // Add chevron icon if not exists
-        if (!this.trigger.querySelector('.dropdown-icon')) {
-            const iconSpan = document.createElement('span');
-            iconSpan.className = 'dropdown-icon';
-            iconSpan.innerHTML = icons.chevronDown;
-            this.trigger.appendChild(iconSpan);
-        }
-        
-        // Set initial state
-        this.menu.style.display = 'none';
-        addClass(this.menu, 'dropdown-menu');
-        
-        // Setup menu items
-        this.setupMenuItems();
-        
-        // Bind events
-        this.bindEvents();
     }
 
-    /**
-     * Setup menu items with proper ARIA attributes
-     */
-    private setupMenuItems(): void {
-        const menuItems = this.menu.querySelectorAll('.dropdown-item, a, button') as NodeListOf<HTMLElement>;
+    private bindClickEvents(): void {
+        // Toggle on click
+        this.clickHandler = (e: Event) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.toggle();
+        };
         
-        menuItems.forEach((item, index) => {
-            if (!hasClass(item, 'dropdown-item')) {
-                addClass(item, 'dropdown-item');
-            }
-            
-            item.setAttribute('role', 'menuitem');
-            item.setAttribute('tabindex', '-1');
-            
-            // Handle sub-menus for multi-level dropdown
-            if (this.options.multiLevel) {
-                const submenu = item.querySelector('.dropdown-submenu') as HTMLElement;
-                if (submenu) {
-                    item.setAttribute('aria-haspopup', 'true');
-                    item.setAttribute('aria-expanded', 'false');
-                    
-                    // Add submenu icon
-                    if (!item.querySelector('.dropdown-submenu-icon')) {
-                        const iconSpan = document.createElement('span');
-                        iconSpan.className = 'dropdown-submenu-icon';
-                        iconSpan.innerHTML = icons.chevronRight;
-                        item.appendChild(iconSpan);
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * Bind event handlers
-     */
-    private bindEvents(): void {
-        // Trigger click/hover
-        if (this.options.hover) {
-            const mouseenterHandler = () => this.show();
-            const mouseleaveHandler = () => this.hide();
-            
-            on(this.trigger, 'mouseenter', mouseenterHandler);
-            on(this.trigger.parentElement!, 'mouseleave', mouseleaveHandler);
-            
-            this.eventHandlers.set('mouseenter', mouseenterHandler);
-            this.eventHandlers.set('mouseleave', mouseleaveHandler);
-        } else {
-            const clickHandler = (e: Event) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.toggle();
-            };
-            
-            on(this.trigger, 'click', clickHandler);
-            this.eventHandlers.set('click', clickHandler);
-        }
-        
-        // Keyboard navigation
-        if (this.options.keyboard) {
-            const keydownHandler = (e: Event) => this.handleKeydown(e as KeyboardEvent);
-            on(this.trigger, 'keydown', keydownHandler);
-            on(this.menu, 'keydown', keydownHandler);
-            this.eventHandlers.set('keydown', keydownHandler);
-        }
+        on(this.trigger, 'click', this.clickHandler);
         
         // Close on outside click
-        const documentClickHandler = (e: Event) => {
+        this.documentClickHandler = (e: Event) => {
             const target = e.target as Element;
-            if (!this.trigger.contains(target) && !this.menu.contains(target)) {
+            const dropdown = this.trigger.closest('.dropdown');
+            if (dropdown && !dropdown.contains(target)) {
                 this.hide();
             }
         };
         
-        // Menu item clicks
-        const menuClickHandler = (e: Event) => {
-            const target = e.target as HTMLElement;
-            const menuItem = target.closest('.dropdown-item') as HTMLElement;
-            
-            if (menuItem && this.options.closeOnClick) {
-                // Don't close if it has a submenu
-                const hasSubmenu = menuItem.querySelector('.dropdown-submenu');
-                if (!hasSubmenu) {
+        // Close on menu item click if option is set
+        if (this.options.closeOnClick) {
+            on(this.menu, 'click', (e: Event) => {
+                const target = e.target as HTMLElement;
+                if (target.closest('.dropdown-item')) {
                     this.hide();
                 }
-            }
-        };
-        
-        // Scroll handler to update position
-        const scrollHandler = () => {
-            if (this.isOpen) {
-                this.positionMenu();
-            }
-        };
-        
-        on(this.menu, 'click', menuClickHandler);
-        this.eventHandlers.set('document-click', documentClickHandler);
-        this.eventHandlers.set('menu-click', menuClickHandler);
-        this.eventHandlers.set('scroll', scrollHandler);
-    }
-
-    /**
-     * Handle keyboard navigation
-     */
-    private handleKeydown(e: KeyboardEvent): void {
-        const menuItems = Array.from(this.menu.querySelectorAll('.dropdown-item:not([disabled])')) as HTMLElement[];
-        const currentIndex = menuItems.indexOf(document.activeElement as HTMLElement);
-        
-        switch (e.key) {
-            case 'Enter':
-            case ' ':
-                if (e.target === this.trigger) {
-                    e.preventDefault();
-                    this.toggle();
-                    if (this.isOpen && menuItems.length > 0) {
-                        menuItems[0].focus();
-                    }
-                }
-                break;
-                
-            case 'Escape':
-                if (this.isOpen) {
-                    e.preventDefault();
-                    this.hide();
-                    this.trigger.focus();
-                }
-                break;
-                
-            case 'ArrowDown':
-                if (this.isOpen) {
-                    e.preventDefault();
-                    const nextIndex = currentIndex < menuItems.length - 1 ? currentIndex + 1 : 0;
-                    menuItems[nextIndex].focus();
-                } else if (e.target === this.trigger) {
-                    e.preventDefault();
-                    this.show();
-                    if (menuItems.length > 0) {
-                        menuItems[0].focus();
-                    }
-                }
-                break;
-                
-            case 'ArrowUp':
-                if (this.isOpen) {
-                    e.preventDefault();
-                    const prevIndex = currentIndex > 0 ? currentIndex - 1 : menuItems.length - 1;
-                    menuItems[prevIndex].focus();
-                }
-                break;
-                
-            case 'ArrowRight':
-                if (this.options.multiLevel && this.isOpen) {
-                    const currentItem = document.activeElement as HTMLElement;
-                    const submenu = currentItem?.querySelector('.dropdown-submenu') as HTMLElement;
-                    if (submenu) {
-                        e.preventDefault();
-                        this.showSubmenu(currentItem, submenu);
-                    }
-                }
-                break;
-                
-            case 'ArrowLeft':
-                if (this.options.multiLevel && this.isOpen) {
-                    const currentItem = document.activeElement as HTMLElement;
-                    const parentMenu = currentItem?.closest('.dropdown-submenu')?.parentElement as HTMLElement;
-                    if (parentMenu) {
-                        e.preventDefault();
-                        this.hideSubmenu(currentItem.closest('.dropdown-submenu') as HTMLElement);
-                        parentMenu.focus();
-                    }
-                }
-                break;
+            });
         }
     }
 
-    /**
-     * Show dropdown
-     */
+    private bindKeyboardEvents(): void {
+        on(this.trigger, 'keydown', (e: Event) => {
+            const event = e as KeyboardEvent;
+            
+            if (event.key === 'Enter' || event.key === ' ') {
+                e.preventDefault();
+                this.toggle();
+            } else if (event.key === 'Escape' && this.isOpen) {
+                e.preventDefault();
+                this.hide();
+                this.trigger.focus();
+            }
+        });
+    }
+
     show(): void {
-        if (this.isOpen) return;
+        if (this.isOpen || this.options.trigger !== 'click') return;
+        
+        const dropdown = this.trigger.closest('.dropdown') as HTMLElement;
+        if (!dropdown) return;
         
         this.isOpen = true;
-        
-        // Update ARIA
+        addClass(dropdown, 'active');
         this.trigger.setAttribute('aria-expanded', 'true');
         
-        // Position menu
-        this.positionMenu();
-        
-        // Show with animation
-        this.menu.style.display = 'block';
-        addClass(this.menu, 'show');
-        fadeIn(this.menu, { duration: 200 });
-        
-        // Add document listener for outside clicks
-        const documentClickHandler = this.eventHandlers.get('document-click');
-        if (documentClickHandler) {
+        // Add document listener
+        if (this.documentClickHandler) {
             setTimeout(() => {
-                on(document, 'click', documentClickHandler);
+                on(document, 'click', this.documentClickHandler!);
             }, 0);
         }
         
-        // Add scroll listener
-        const scrollHandler = this.eventHandlers.get('scroll');
-        if (scrollHandler) {
-            on(window, 'scroll', scrollHandler);
-            on(window, 'resize', scrollHandler);
-        }
-        
-        // Dispatch event
-        trigger(this.trigger, 'dropdown:show', { dropdown: this });
+        trigger(this.trigger, 'gumi:dropdown:show', { dropdown: this });
     }
 
-    /**
-     * Hide dropdown
-     */
     hide(): void {
-        if (!this.isOpen) return;
+        if (!this.isOpen || this.options.trigger !== 'click') return;
+        
+        const dropdown = this.trigger.closest('.dropdown') as HTMLElement;
+        if (!dropdown) return;
         
         this.isOpen = false;
-        
-        // Update ARIA
+        removeClass(dropdown, 'active');
         this.trigger.setAttribute('aria-expanded', 'false');
         
-        // Hide with animation
-        removeClass(this.menu, 'show');
-        fadeOut(this.menu, { duration: 150 }).then(() => {
-            this.menu.style.display = 'none';
-        });
-        
-        // Hide all submenus
-        if (this.options.multiLevel) {
-            const submenus = this.menu.querySelectorAll('.dropdown-submenu');
-            submenus.forEach(submenu => this.hideSubmenu(submenu as HTMLElement));
-        }
-        
         // Remove document listener
-        const documentClickHandler = this.eventHandlers.get('document-click');
-        if (documentClickHandler) {
-            off(document, 'click', documentClickHandler);
+        if (this.documentClickHandler) {
+            off(document, 'click', this.documentClickHandler);
         }
         
-        // Remove scroll listener
-        const scrollHandler = this.eventHandlers.get('scroll');
-        if (scrollHandler) {
-            off(window, 'scroll', scrollHandler);
-            off(window, 'resize', scrollHandler);
-        }
-        
-        // Dispatch event
-        trigger(this.trigger, 'dropdown:hide', { dropdown: this });
+        trigger(this.trigger, 'gumi:dropdown:hide', { dropdown: this });
     }
 
-    /**
-     * Toggle dropdown (legacy method names for compatibility)
-     */
     toggle(): void {
         if (this.isOpen) {
             this.hide();
@@ -369,150 +195,20 @@ export class Dropdown {
         }
     }
 
-    // Legacy method aliases
-    open = this.show;
-    close = this.hide;
-
-    /**
-     * Position menu relative to trigger
-     */
-    private positionMenu(): void {
-        const triggerRect = this.trigger.getBoundingClientRect();
-        const menuRect = this.menu.getBoundingClientRect();
-        const viewport = {
-            width: window.innerWidth,
-            height: window.innerHeight
-        };
-        
-        let top = 0;
-        let left = 0;
-        
-        // Calculate position based on placement
-        switch (this.options.placement) {
-            case 'bottom-start':
-                top = triggerRect.bottom + this.options.offset!;
-                left = triggerRect.left;
-                break;
-            case 'bottom-end':
-                top = triggerRect.bottom + this.options.offset!;
-                left = triggerRect.right - menuRect.width;
-                break;
-            case 'top-start':
-                top = triggerRect.top - menuRect.height - this.options.offset!;
-                left = triggerRect.left;
-                break;
-            case 'top-end':
-                top = triggerRect.top - menuRect.height - this.options.offset!;
-                left = triggerRect.right - menuRect.width;
-                break;
-            case 'right-start':
-                top = triggerRect.top;
-                left = triggerRect.right + this.options.offset!;
-                break;
-            case 'left-start':
-                top = triggerRect.top;
-                left = triggerRect.left - menuRect.width - this.options.offset!;
-                break;
-            // Legacy placement options for backward compatibility
-            case 'bottom':
-                top = triggerRect.bottom + this.options.offset!;
-                left = triggerRect.left + (triggerRect.width - menuRect.width) / 2;
-                break;
-            case 'top':
-                top = triggerRect.top - menuRect.height - this.options.offset!;
-                left = triggerRect.left + (triggerRect.width - menuRect.width) / 2;
-                break;
-            case 'right':
-                top = triggerRect.top + (triggerRect.height - menuRect.height) / 2;
-                left = triggerRect.right + this.options.offset!;
-                break;
-            case 'left':
-                top = triggerRect.top + (triggerRect.height - menuRect.height) / 2;
-                left = triggerRect.left - menuRect.width - this.options.offset!;
-                break;
-        }
-        
-        // Adjust for viewport boundaries
-        if (left + menuRect.width > viewport.width) {
-            left = viewport.width - menuRect.width - 8;
-        }
-        if (left < 8) left = 8;
-        
-        if (top + menuRect.height > viewport.height) {
-            top = triggerRect.top - menuRect.height - this.options.offset!;
-        }
-        if (top < 8) top = 8;
-        
-        // Apply position
-        this.menu.style.position = 'fixed';
-        this.menu.style.top = `${top}px`;
-        this.menu.style.left = `${left}px`;
-        this.menu.style.zIndex = '1000';
-    }
-
-    /**
-     * Update dropdown position (legacy method)
-     */
-    updatePosition(): void {
-        if (this.isOpen) {
-            this.positionMenu();
-        }
-    }
-
-    /**
-     * Show submenu (for multi-level dropdowns)
-     */
-    private showSubmenu(parentItem: HTMLElement, submenu: HTMLElement): void {
-        if (!this.options.multiLevel) return;
-        
-        parentItem.setAttribute('aria-expanded', 'true');
-        submenu.style.display = 'block';
-        addClass(submenu, 'show');
-        
-        // Position submenu
-        const parentRect = parentItem.getBoundingClientRect();
-        submenu.style.position = 'fixed';
-        submenu.style.top = `${parentRect.top}px`;
-        submenu.style.left = `${parentRect.right}px`;
-        
-        // Focus first item in submenu
-        const firstItem = submenu.querySelector('.dropdown-item') as HTMLElement;
-        if (firstItem) firstItem.focus();
-    }
-
-    /**
-     * Hide submenu
-     */
-    private hideSubmenu(submenu: HTMLElement): void {
-        const parentItem = submenu.parentElement as HTMLElement;
-        if (parentItem) {
-            parentItem.setAttribute('aria-expanded', 'false');
-        }
-        
-        submenu.style.display = 'none';
-        removeClass(submenu, 'show');
-    }
-
-    /**
-     * Destroy dropdown instance
-     */
     destroy(): void {
-        // Remove all event listeners
-        this.eventHandlers.forEach((handler, event) => {
-            if (event === 'document-click') {
-                off(document, 'click', handler);
-            } else if (event === 'menu-click') {
-                off(this.menu, 'click', handler);
-            } else if (event === 'keydown') {
-                off(this.trigger, 'keydown', handler);
-                off(this.menu, 'keydown', handler);
-            } else if (event === 'scroll') {
-                off(window, 'scroll', handler);
-                off(window, 'resize', handler);
-            } else {
-                off(this.trigger, event.split('-')[0], handler);
-            }
-        });
+        // Close dropdown first
+        if (this.isOpen) {
+            this.hide();
+        }
+        
+        // Remove event listeners
+        if (this.clickHandler) {
+            off(this.trigger, 'click', this.clickHandler);
+        }
+        
+        if (this.documentClickHandler) {
+            off(document, 'click', this.documentClickHandler);
+        }
         
         // Clean up ARIA attributes
         this.trigger.removeAttribute('role');
@@ -520,11 +216,6 @@ export class Dropdown {
         this.trigger.removeAttribute('aria-expanded');
         
         this.menu.removeAttribute('role');
-        this.menu.removeAttribute('aria-labelledby');
-        
-        // Reset state
-        this.menu.style.display = 'none';
-        removeClass(this.menu, 'show');
     }
 
     /**
@@ -544,23 +235,14 @@ export class Dropdown {
             const options: DropdownOptions = {};
             
             // Parse data attributes
-            const placement = element.getAttribute('data-placement') || element.getAttribute('data-dropdown-placement');
-            if (placement) options.placement = placement as any;
-            
-            const offset = element.getAttribute('data-offset');
-            if (offset) options.offset = parseInt(offset, 10);
+            const triggerType = element.getAttribute('data-trigger');
+            if (triggerType) options.trigger = triggerType as 'click' | 'hover';
             
             const closeOnClick = element.getAttribute('data-close-on-click');
-            if (closeOnClick) options.closeOnClick = closeOnClick === 'true';
+            if (closeOnClick) options.closeOnClick = closeOnClick !== 'false';
             
-            const hover = element.getAttribute('data-hover');
-            if (hover) options.hover = hover === 'true';
-            
-            const multiLevel = element.getAttribute('data-multi-level');
-            if (multiLevel) options.multiLevel = multiLevel === 'true';
-            
-            const triggerType = element.getAttribute('data-dropdown-trigger');
-            if (triggerType) options.trigger = triggerType as any;
+            const keyboard = element.getAttribute('data-keyboard');
+            if (keyboard) options.keyboard = keyboard !== 'false';
             
             return new Dropdown(element, options);
         });

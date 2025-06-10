@@ -1,6 +1,6 @@
 {
     "name": "@rxxuzi/gumi",
-    "version": "1.1.0",
+    "version": "1.2.1",
     "description": "Clean & minimal design system with delightful interactions",
     "main": "dist/js/gumi.js",
     "module": "dist/js/gumi.esm.js",

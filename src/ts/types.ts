@@ -38,12 +38,8 @@ export interface ProgressOptions {
 
 export interface DropdownOptions {
     trigger?: 'click' | 'hover';
-    placement?: 'top' | 'bottom' | 'left' | 'right' | 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'right-start' | 'left-start';
-    offset?: number;
     closeOnClick?: boolean;
     keyboard?: boolean;
-    hover?: boolean;
-    multiLevel?: boolean;
 }
 
 export interface AccordionOptions {
@@ -82,6 +78,6 @@ export interface GumiEventMap {
     'tab-change': CustomEvent<{ index: number }>;
     'accordion-toggle': CustomEvent<{ item: HTMLElement; open: boolean }>;
     'switch-change': CustomEvent<{ checked: boolean }>;
-    'dropdown:show': CustomEvent<{ dropdown: any }>;
-    'dropdown:hide': CustomEvent<{ dropdown: any }>;
+    'gumi:dropdown:show': CustomEvent<{ dropdown: any }>;
+    'gumi:dropdown:hide': CustomEvent<{ dropdown: any }>;
 }
